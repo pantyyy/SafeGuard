@@ -6,6 +6,8 @@
 #include "安全防护.h"
 #include "安全防护Dlg.h"
 #include "afxdialogex.h"
+#include "Pe.h"
+
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -62,6 +64,7 @@ BEGIN_MESSAGE_MAP(C安全防护Dlg, CDialogEx)
 	ON_WM_SYSCOMMAND()
 	ON_WM_PAINT()
 	ON_WM_QUERYDRAGICON()
+	ON_BN_CLICKED(IDC_BUTTON_PE, &C安全防护Dlg::OnBnClickedButtonPe)
 END_MESSAGE_MAP()
 
 
@@ -150,3 +153,13 @@ HCURSOR C安全防护Dlg::OnQueryDragIcon()
 	return static_cast<HCURSOR>(m_hIcon);
 }
 
+
+
+void C安全防护Dlg::OnBnClickedButtonPe()
+{
+	// TODO:  在此添加控件通知处理程序代码
+	//创建PE对话框
+	CPe* pe = new CPe();
+	pe->Create(IDD_DIALOG_PE);
+	pe->ShowWindow(SW_SHOW);
+}
