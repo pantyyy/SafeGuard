@@ -63,15 +63,15 @@ BOOL CImportTable::OnInitDialog()
 	ImportINT.InsertColumn(0, L"API名称", 0, 100);
 	ImportINT.InsertColumn(1, L"序号", 0, 80);
 	ImportINT.InsertColumn(2, L"Thunk值", 0, 100);
-	ImportINT.InsertColumn(3, L"Thunk偏移", 0, 100);
-	ImportINT.InsertColumn(4, L"ThunkRVA", 0, 100);
+	//ImportINT.InsertColumn(3, L"Thunk偏移", 0, 100);
+	//ImportINT.InsertColumn(4, L"ThunkRVA", 0, 100);
 
 	ImportIAT.SetExtendedStyle(LVS_EX_GRIDLINES | LVS_EX_FULLROWSELECT);
 	ImportIAT.InsertColumn(0, L"API名称", 0, 100);
 	ImportIAT.InsertColumn(1, L"序号", 0, 80);
 	ImportIAT.InsertColumn(2, L"Thunk值", 0, 100);
-	ImportIAT.InsertColumn(3, L"Thunk偏移", 0, 100);
-	ImportIAT.InsertColumn(4, L"ThunkRVA", 0, 100);
+	//ImportIAT.InsertColumn(3, L"Thunk偏移", 0, 100);
+	//ImportIAT.InsertColumn(4, L"ThunkRVA", 0, 100);
 
 
 	//获取PE头对象
@@ -155,7 +155,7 @@ void CImportTable::OnNMClickList3(NMHDR *pNMHDR, LRESULT *pResult)
 	//获取index下标
 	index = ImportModel.GetNextSelectedItem(ps);
 	//获取选中行中指定列的数据
-	CString DllName = ImportModel.GetItemText(index, 0);
+	CString SelectedDllName = ImportModel.GetItemText(index, 0);
 
 	//获取PE头
 	PIMAGE_DOS_HEADER pDos = (PIMAGE_DOS_HEADER)CTool::pFileBuf;
@@ -169,6 +169,87 @@ void CImportTable::OnNMClickList3(NMHDR *pNMHDR, LRESULT *pResult)
 	PIMAGE_IMPORT_DESCRIPTOR pImport = (PIMAGE_IMPORT_DESCRIPTOR)(dwImportFOA + CTool::pFileBuf);
 
 
+	CString tempStr;
+	//遍历每个模块
+	while (pImport->Name != 0)
+	{
+		char*  pDllName = CTool::RVAtoFOA(pImport->Name, CTool::pFileBuf) + CTool::pFileBuf;
+		CString DllName(pDllName);
+
+		//用户选中的模块和每个模块的名字相比较
+		//等于0表示相等
+		if (SelectedDllName.Compare(DllName) != 0){
+			//不等于0 , 不相等 , 遍历下一个模块
+			++pImport;
+			continue;
+		}
+
+		//找到了指定的模块
+		//获取INT的地址
+		PIMAGE_THUNK_DATA pINTAddr = (PIMAGE_THUNK_DATA)
+			(CTool::RVAtoFOA(pImport->OriginalFirstThunk, CTool::pFileBuf) + CTool::pFileBuf);
+
+		int count = 0;
+		
+		//遍历IAT表
+		while (pINTAddr->u1.AddressOfData)
+		{
+			//判断函数的导入方式
+			//如果最高位为1 , 说明是序号导入 , 否则就是名称导入
+			//判断最高位的值
+			if (pINTAddr->u1.AddressOfData & 0x80000000)
+			{
+				//序号导入 , 那么其低位2个字节就是其函数序号
+				//printf(" -->name:[NULL]  ordinal:[%04X]\n",pINTAddr->u1.AddressOfData & 0xFFFF);
+				
+				ImportINT.InsertItem(count, L"");
+
+				//API名称
+
+				//序号
+				//Thunk值
+				//Thunk偏移
+				//ThunkRVA
+			}
+			else
+			{
+				ImportINT.InsertItem(count, L"");
+				ImportIAT.InsertItem(count , L"");
+
+				//名称导入
+				DWORD dwNameRVA = pINTAddr->u1.AddressOfData;
+				DWORD dwNameFOA = CTool::RVAtoFOA(dwNameRVA, CTool::pFileBuf);
+				PIMAGE_IMPORT_BY_NAME pName =
+					(PIMAGE_IMPORT_BY_NAME)
+					(dwNameFOA + CTool::pFileBuf);
+				//printf(" -->name:[%s]  ordinal:[%04X]\n",pName->Name, pName->Hint);
+
+				//API名称
+				tempStr.Format(L"%S", pName->Name);
+				ImportINT.SetItemText(count, 0, tempStr);
+				ImportIAT.SetItemText(count, 0, tempStr);
+				//序号
+				tempStr.Format(L"%04d", pName->Hint);
+				ImportINT.SetItemText(count, 1, tempStr);
+				ImportIAT.SetItemText(count, 1, tempStr);
+				//Thunk值
+				tempStr.Format(L"%08X", pINTAddr->u1.Function);
+				ImportINT.SetItemText(count, 2, tempStr);
+				ImportIAT.SetItemText(count, 2, tempStr);
+
+				//Thunk偏移
+				//ImportINT.SetItemText(count, 3, tempStr);
+				//ThunkRVA
+				//ImportINT.SetItemText(count, 4, tempStr);
+			}
+
+			count++;
+			pINTAddr++;
+		}
+
+		break;
+
+	}
 
 
 
