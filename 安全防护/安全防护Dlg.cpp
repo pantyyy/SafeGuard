@@ -7,7 +7,7 @@
 #include "安全防护Dlg.h"
 #include "afxdialogex.h"
 #include "Pe.h"
-
+#include "TaskManager.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -65,6 +65,7 @@ BEGIN_MESSAGE_MAP(C安全防护Dlg, CDialogEx)
 	ON_WM_PAINT()
 	ON_WM_QUERYDRAGICON()
 	ON_BN_CLICKED(IDC_BUTTON_PE, &C安全防护Dlg::OnBnClickedButtonPe)
+	ON_BN_CLICKED(IDC_BUTTON_TaskManager, &C安全防护Dlg::OnBnClickedButtonTaskmanager)
 END_MESSAGE_MAP()
 
 
@@ -162,4 +163,13 @@ void C安全防护Dlg::OnBnClickedButtonPe()
 	CPe* pe = new CPe();
 	pe->Create(IDD_DIALOG_PE);
 	pe->ShowWindow(SW_SHOW);
+}
+
+
+void C安全防护Dlg::OnBnClickedButtonTaskmanager()
+{
+	// TODO:  在此添加控件通知处理程序代码
+	CTaskManager* TaskManager = new CTaskManager();
+	TaskManager->Create(IDD_DIALOG_TaskManager);
+	TaskManager->ShowWindow(SW_SHOW);
 }
