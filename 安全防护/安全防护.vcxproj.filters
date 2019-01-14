@@ -48,6 +48,15 @@
     <ClInclude Include="ImportTable.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="RelocateTable.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="SectionInfo.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="DirInfo.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="安全防护.cpp">
@@ -72,6 +81,15 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="ImportTable.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="RelocateTable.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="SectionInfo.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="DirInfo.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

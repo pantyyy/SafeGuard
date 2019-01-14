@@ -152,9 +152,9 @@ void CImportTable::OnNMClickList3(NMHDR *pNMHDR, LRESULT *pResult)
 	POSITION ps;
 	int index;
 	ps = ImportModel.GetFirstSelectedItemPosition();
-	//获取index下标
+	//获取index下标 , index即是多少行
 	index = ImportModel.GetNextSelectedItem(ps);
-	//获取选中行中指定列的数据
+	//获取选中行中指定列的数据 , 0表示多少列
 	CString SelectedDllName = ImportModel.GetItemText(index, 0);
 
 	//获取PE头

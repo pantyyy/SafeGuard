@@ -42,4 +42,7 @@ public:
 	afx_msg void OnBnClickedButtonExport();
 	afx_msg void OnBnClickedButtonResourcetable();
 	afx_msg void OnBnClickedButtonImport();
+	afx_msg void OnBnClickedButtonRelocate();
+	afx_msg void OnBnClickedButtonSection();
+	afx_msg void OnBnClickedButtonDir();
 };

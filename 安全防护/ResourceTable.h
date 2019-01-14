@@ -22,4 +22,5 @@ protected:
 public:
 	CTreeCtrl ResourceTree;
 	CListCtrl ResourceList;
+	virtual BOOL OnInitDialog();
 };

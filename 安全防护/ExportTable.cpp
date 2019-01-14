@@ -71,6 +71,7 @@ BOOL CExportTable::OnInitDialog()
 
 	//获取导出表的RVA
 	DWORD dwExportRVA = pNt->OptionalHeader.DataDirectory[0].VirtualAddress;
+
 	//RVA转化为FOA
 	DWORD dwExportFOA = CTool::RVAtoFOA(dwExportRVA, CTool::pFileBuf);
 	//导出表对象

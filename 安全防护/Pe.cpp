@@ -9,7 +9,9 @@
 #include "ExportTable.h"
 #include "ResourceTable.h"
 #include "ImportTable.h"
-
+#include "RelocateTable.h"
+#include "SectionInfo.h"
+#include "DirInfo.h"
 // CPe 对话框
 
 IMPLEMENT_DYNAMIC(CPe, CDialogEx)
@@ -70,6 +72,9 @@ BEGIN_MESSAGE_MAP(CPe, CDialogEx)
 	ON_BN_CLICKED(IDC_BUTTON_Export, &CPe::OnBnClickedButtonExport)
 	ON_BN_CLICKED(IDC_BUTTON_ResourceTable, &CPe::OnBnClickedButtonResourcetable)
 	ON_BN_CLICKED(IDC_BUTTON_Import, &CPe::OnBnClickedButtonImport)
+	ON_BN_CLICKED(IDC_BUTTON_Relocate, &CPe::OnBnClickedButtonRelocate)
+	ON_BN_CLICKED(IDC_BUTTON_Section, &CPe::OnBnClickedButtonSection)
+	ON_BN_CLICKED(IDC_BUTTON_Dir, &CPe::OnBnClickedButtonDir)
 END_MESSAGE_MAP()
 
 
@@ -162,6 +167,19 @@ void CPe::OnBnClickedButtonResolve()
 void CPe::OnBnClickedButtonExport()
 {
 	// TODO:  在此添加控件通知处理程序代码
+
+	//获取PE头对象
+	PIMAGE_DOS_HEADER pDos = (PIMAGE_DOS_HEADER)CTool::pFileBuf;
+	PIMAGE_NT_HEADERS pNt = (PIMAGE_NT_HEADERS)(pDos->e_lfanew + CTool::pFileBuf);
+
+	//获取导出表的RVA
+	DWORD dwExportRVA = pNt->OptionalHeader.DataDirectory[0].VirtualAddress;
+	if (dwExportRVA == 0)
+	{
+		MessageBox(L"没有导出表!");
+		return;
+	}
+
 	CExportTable* ExportTable = new CExportTable();
 	ExportTable->Create(IDD_DIALOG_ExportTable);
 	ExportTable->ShowWindow(SW_SHOW);
@@ -180,7 +198,59 @@ void CPe::OnBnClickedButtonResourcetable()
 void CPe::OnBnClickedButtonImport()
 {
 	// TODO:  在此添加控件通知处理程序代码
+	//获取PE头对象
+	PIMAGE_DOS_HEADER pDos = (PIMAGE_DOS_HEADER)CTool::pFileBuf;
+	PIMAGE_NT_HEADERS pNt = (PIMAGE_NT_HEADERS)(pDos->e_lfanew + CTool::pFileBuf);
+
+	//导入表的RVA
+	DWORD dwImportRVA = pNt->OptionalHeader.DataDirectory[1].VirtualAddress;
+	if (dwImportRVA == 0)
+	{
+		MessageBox(L"没有导入表");
+		return;
+	}
+
 	CImportTable* ImportTable = new CImportTable();
 	ImportTable->Create(IDD_DIALOG_ImportTable);
 	ImportTable->ShowWindow(SW_SHOW);
+}
+
+
+void CPe::OnBnClickedButtonRelocate()
+{
+	// TODO:  在此添加控件通知处理程序代码
+
+	//定位到重定位表的地址
+	PIMAGE_DOS_HEADER pDos = (PIMAGE_DOS_HEADER)CTool::pFileBuf;
+	PIMAGE_NT_HEADERS pNt = (PIMAGE_NT_HEADERS)(pDos->e_lfanew + CTool::pFileBuf);
+	DWORD dwRelocRVA = pNt->OptionalHeader.DataDirectory[5].VirtualAddress;
+
+	if (dwRelocRVA == 0)
+	{
+		MessageBox(L"没有重定位表");
+		return;
+	}
+
+	CRelocateTable* RelocateTable = new CRelocateTable();
+	RelocateTable->Create(IDD_DIALOG_RelocateTable);
+	RelocateTable->ShowWindow(SW_SHOW);
+}
+
+
+void CPe::OnBnClickedButtonSection()
+{
+	// TODO:  在此添加控件通知处理程序代码
+	CSectionInfo* SectionInfo = new CSectionInfo();
+	SectionInfo->Create(IDD_DIALOG_SectionInfo);
+	SectionInfo->ShowWindow(SW_SHOW);
+
+}
+
+
+void CPe::OnBnClickedButtonDir()
+{
+	// TODO:  在此添加控件通知处理程序代码
+	CDirInfo* DirInfo = new CDirInfo();
+	DirInfo->Create(IDD_DIALOG_Dir);
+	DirInfo->ShowWindow(SW_SHOW);
 }
