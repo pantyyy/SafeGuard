@@ -8,6 +8,7 @@
 #include "afxdialogex.h"
 #include "Pe.h"
 #include "TaskManager.h"
+#include "TrashClean.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -66,6 +67,7 @@ BEGIN_MESSAGE_MAP(C安全防护Dlg, CDialogEx)
 	ON_WM_QUERYDRAGICON()
 	ON_BN_CLICKED(IDC_BUTTON_PE, &C安全防护Dlg::OnBnClickedButtonPe)
 	ON_BN_CLICKED(IDC_BUTTON_TaskManager, &C安全防护Dlg::OnBnClickedButtonTaskmanager)
+	ON_BN_CLICKED(IDC_BUTTON_CleanTrash, &C安全防护Dlg::OnBnClickedButtonCleantrash)
 END_MESSAGE_MAP()
 
 
@@ -172,4 +174,13 @@ void C安全防护Dlg::OnBnClickedButtonTaskmanager()
 	CTaskManager* TaskManager = new CTaskManager();
 	TaskManager->Create(IDD_DIALOG_TaskManager);
 	TaskManager->ShowWindow(SW_SHOW);
+}
+
+
+void C安全防护Dlg::OnBnClickedButtonCleantrash()
+{
+	// TODO:  在此添加控件通知处理程序代码
+	CTrashClean* TrashClean = new CTrashClean();
+	TrashClean->Create(IDD_DIALOG_Trash_Clean);
+	TrashClean->ShowWindow(SW_SHOW);
 }

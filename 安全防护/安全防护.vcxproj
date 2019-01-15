@@ -199,6 +199,7 @@
     <ClInclude Include="TaskManager.h" />
     <ClInclude Include="Thread.h" />
     <ClInclude Include="Tool.h" />
+    <ClInclude Include="TrashClean.h" />
     <ClInclude Include="安全防护.h" />
     <ClInclude Include="安全防护Dlg.h" />
   </ItemGroup>
@@ -221,6 +222,7 @@
     <ClCompile Include="TaskManager.cpp" />
     <ClCompile Include="Thread.cpp" />
     <ClCompile Include="Tool.cpp" />
+    <ClCompile Include="TrashClean.cpp" />
     <ClCompile Include="安全防护.cpp" />
     <ClCompile Include="安全防护Dlg.cpp" />
   </ItemGroup>

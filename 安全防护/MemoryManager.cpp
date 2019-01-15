@@ -45,6 +45,14 @@ void CMemoryManager::OnBnClickedButtonMemoryoptimize()
 
 }
 
+__int64 CompareFileTime(FILETIME time1, FILETIME time2)
+{
+	__int64 a = time1.dwHighDateTime << 32 | time1.dwLowDateTime;
+	__int64 b = time2.dwHighDateTime << 32 | time2.dwLowDateTime;
+	return   (b - a);
+}
+
+
 //CPu使用率计算
 int GetCPU()
 {
@@ -62,19 +70,17 @@ int GetCPU()
 	FILETIME preidleTime, prekernelTime, preuserTime;
 	GetSystemTimes(&preidleTime, &prekernelTime, &preuserTime);
 
-	//转换上面得到的时间
-	double 空闲时间1 = (double)(idleTime.dwHighDateTime*4.294967296E9) + (double)idleTime.dwLowDateTime;
-	double 空闲时间2 = (double)(preidleTime.dwHighDateTime*4.294967296E9) + (double)preidleTime.dwLowDateTime;
-	double 内核时间1 = (double)(kernelTime.dwHighDateTime*4.294967296E9) + (double)kernelTime.dwLowDateTime;
-	double 内核时间2 = (double)(prekernelTime.dwHighDateTime*4.294967296E9) + (double)prekernelTime.dwLowDateTime;
-	double 用户时间1 = (double)(userTime.dwHighDateTime*4.294967296E9) + (double)userTime.dwLowDateTime;
-	double 用户时间2 = (double)(preuserTime.dwHighDateTime*4.294967296E9) + (double)preuserTime.dwLowDateTime;
+	int idle = CompareFileTime(preidleTime, idleTime);
+	int kernel = CompareFileTime(prekernelTime, kernelTime);
+	int user = CompareFileTime(preuserTime, userTime);
 
-	int 使用率 = (int)(100.0 - (空闲时间2 - 空闲时间1) / (内核时间2 - 内核时间1 + 用户时间2 - 用户时间1)*100.0);
-	return 使用率;
+	//(总的时间 - 空闲时间) / 总的时间
+	int cpu = (kernel + user - idle) * 100 / (kernel + user);
 
+	return cpu;
 }
 
+	
 int GetMemory()
 {
 	//获取当前内存状态信息

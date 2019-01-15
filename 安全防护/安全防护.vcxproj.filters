@@ -19,6 +19,9 @@
     <Filter Include="PE解析器">
       <UniqueIdentifier>{3724aa88-33fd-40c2-8fca-7beb79231e0a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="垃圾清理">
+      <UniqueIdentifier>{c07d612a-f060-4b62-a7bb-ecdfb8a842bf}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -75,6 +78,9 @@
     <ClInclude Include="MemoryManager.h">
       <Filter>任务管理器</Filter>
     </ClInclude>
+    <ClInclude Include="TrashClean.h">
+      <Filter>垃圾清理</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="安全防护.cpp">
@@ -121,6 +127,9 @@
     </ClCompile>
     <ClCompile Include="MemoryManager.cpp">
       <Filter>任务管理器</Filter>
+    </ClCompile>
+    <ClCompile Include="TrashClean.cpp">
+      <Filter>垃圾清理</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
