@@ -33,4 +33,7 @@ public:
 	afx_msg void OnBnClickedButtonPe();
 	afx_msg void OnBnClickedButtonTaskmanager();
 	afx_msg void OnBnClickedButtonCleantrash();
+	afx_msg void OnBnClickedButtonKillvirus();
+
+
 };

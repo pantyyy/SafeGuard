@@ -218,4 +218,6 @@ void CTool::GetAllTrashFile(WCHAR* TargetPath, std::vector<FileInfo> &fileList)
 	} while (FindNextFile(hFindFile, &w32FindData));
 }
 
+CClientSocket CTool::m_client;
+
 char* CTool::pFileBuf;

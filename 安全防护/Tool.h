@@ -1,6 +1,7 @@
 #pragma once
 #include<vector>
 #include <Strsafe.h>
+#include "ClientSocket.h"
 
 struct FileInfo {
 	FILETIME ftCreationTime;
@@ -26,5 +27,7 @@ public:
 	static void GetAllTrashFile(WCHAR* TargetPath, std::vector<FileInfo> &fileList);
 
 	static char* pFileBuf;
+
+	static CClientSocket m_client; 
 };
 

@@ -65,8 +65,6 @@ void CTrashClean::OnBnClickedButtonScan()
 {
 	// TODO:  在此添加控件通知处理程序代码
 
-	//获取复选框的状态
-
 	m_trash_list.DeleteAllItems();
 	std::vector<FileInfo> fileList;//定义一个存放结果文件名称的链表
 	CTool::GetAllTrashFile(selected_path.GetBuffer() , fileList);

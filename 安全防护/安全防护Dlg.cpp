@@ -9,6 +9,7 @@
 #include "Pe.h"
 #include "TaskManager.h"
 #include "TrashClean.h"
+#include "KillVirus.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -71,6 +72,7 @@ BEGIN_MESSAGE_MAP(C安全防护Dlg, CDialogEx)
 	ON_BN_CLICKED(IDC_BUTTON_PE, &C安全防护Dlg::OnBnClickedButtonPe)
 	ON_BN_CLICKED(IDC_BUTTON_TaskManager, &C安全防护Dlg::OnBnClickedButtonTaskmanager)
 	ON_BN_CLICKED(IDC_BUTTON_CleanTrash, &C安全防护Dlg::OnBnClickedButtonCleantrash)
+	ON_BN_CLICKED(IDC_BUTTON_KillVirus, &C安全防护Dlg::OnBnClickedButtonKillvirus)
 END_MESSAGE_MAP()
 
 
@@ -189,3 +191,12 @@ void C安全防护Dlg::OnBnClickedButtonCleantrash()
 }
 
 
+
+
+void C安全防护Dlg::OnBnClickedButtonKillvirus()
+{
+	// TODO:  在此添加控件通知处理程序代码
+	CKillVirus* KillVirus = new CKillVirus();
+	KillVirus->Create(IDD_DIALOG_Kill_Virus);
+	KillVirus->ShowWindow(SW_SHOW);
+}

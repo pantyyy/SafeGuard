@@ -87,7 +87,7 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>WIN32;_WINDOWS;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;_DEBUG;%(PreprocessorDefinitions);_CRT_SECURE_NO_WARNINGS;_WINSOCK_DEPRECATED_NO_WARNINGS</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
     </ClCompile>
     <Link>
@@ -184,9 +184,12 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="ClientSocket.h" />
     <ClInclude Include="DirInfo.h" />
     <ClInclude Include="ExportTable.h" />
     <ClInclude Include="ImportTable.h" />
+    <ClInclude Include="KillVirus.h" />
+    <ClInclude Include="Md5.h" />
     <ClInclude Include="MemoryManager.h" />
     <ClInclude Include="Module.h" />
     <ClInclude Include="Pe.h" />
@@ -201,13 +204,17 @@
     <ClInclude Include="Thread.h" />
     <ClInclude Include="Tool.h" />
     <ClInclude Include="TrashClean.h" />
+    <ClInclude Include="WhiteListKill.h" />
     <ClInclude Include="安全防护.h" />
     <ClInclude Include="安全防护Dlg.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="ClientSocket.cpp" />
     <ClCompile Include="DirInfo.cpp" />
     <ClCompile Include="ExportTable.cpp" />
     <ClCompile Include="ImportTable.cpp" />
+    <ClCompile Include="KillVirus.cpp" />
+    <ClCompile Include="Md5.cpp" />
     <ClCompile Include="MemoryManager.cpp" />
     <ClCompile Include="Module.cpp" />
     <ClCompile Include="Pe.cpp" />
@@ -225,6 +232,7 @@
     <ClCompile Include="Thread.cpp" />
     <ClCompile Include="Tool.cpp" />
     <ClCompile Include="TrashClean.cpp" />
+    <ClCompile Include="WhiteListKill.cpp" />
     <ClCompile Include="安全防护.cpp" />
     <ClCompile Include="安全防护Dlg.cpp" />
   </ItemGroup>

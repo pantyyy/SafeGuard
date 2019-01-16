@@ -1,0 +1,3 @@
+navicat.exe
+XMind.exe
+QQ.exe

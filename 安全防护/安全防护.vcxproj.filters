@@ -22,6 +22,9 @@
     <Filter Include="垃圾清理">
       <UniqueIdentifier>{c07d612a-f060-4b62-a7bb-ecdfb8a842bf}</UniqueIdentifier>
     </Filter>
+    <Filter Include="病毒查杀">
+      <UniqueIdentifier>{01a4866b-bed9-4d60-8400-e758f0ec9dd3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -84,6 +87,18 @@
     <ClInclude Include="ServiceManager.h">
       <Filter>任务管理器</Filter>
     </ClInclude>
+    <ClInclude Include="KillVirus.h">
+      <Filter>病毒查杀</Filter>
+    </ClInclude>
+    <ClInclude Include="Md5.h">
+      <Filter>病毒查杀</Filter>
+    </ClInclude>
+    <ClInclude Include="WhiteListKill.h">
+      <Filter>病毒查杀</Filter>
+    </ClInclude>
+    <ClInclude Include="ClientSocket.h">
+      <Filter>病毒查杀</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="安全防护.cpp">
@@ -136,6 +151,18 @@
     </ClCompile>
     <ClCompile Include="ServiceManager.cpp">
       <Filter>任务管理器</Filter>
+    </ClCompile>
+    <ClCompile Include="KillVirus.cpp">
+      <Filter>病毒查杀</Filter>
+    </ClCompile>
+    <ClCompile Include="Md5.cpp">
+      <Filter>病毒查杀</Filter>
+    </ClCompile>
+    <ClCompile Include="WhiteListKill.cpp">
+      <Filter>病毒查杀</Filter>
+    </ClCompile>
+    <ClCompile Include="ClientSocket.cpp">
+      <Filter>病毒查杀</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
