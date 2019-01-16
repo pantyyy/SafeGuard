@@ -23,4 +23,5 @@ public:
 	CTreeCtrl ResourceTree;
 	CListCtrl ResourceList;
 	virtual BOOL OnInitDialog();
+	void AddNode(PIMAGE_RESOURCE_DIRECTORY pResHeader , HTREEITEM hParent);
 };

@@ -75,7 +75,7 @@ int GetCPU()
 	int user = CompareFileTime(preuserTime, userTime);
 
 	//(总的时间 - 空闲时间) / 总的时间
-	int cpu = (kernel + user - idle) * 100 / (kernel + user);
+	int cpu = (100 - idle) * 100 / (kernel + user);
 
 	return cpu;
 }

@@ -31,6 +31,8 @@ public:
 // 实现
 protected:
 	DECLARE_MESSAGE_MAP()
+public:
+	
 };
 
 CAboutDlg::CAboutDlg() : CDialogEx(CAboutDlg::IDD)
@@ -43,6 +45,7 @@ void CAboutDlg::DoDataExchange(CDataExchange* pDX)
 }
 
 BEGIN_MESSAGE_MAP(CAboutDlg, CDialogEx)
+
 END_MESSAGE_MAP()
 
 
@@ -184,3 +187,5 @@ void C安全防护Dlg::OnBnClickedButtonCleantrash()
 	TrashClean->Create(IDD_DIALOG_Trash_Clean);
 	TrashClean->ShowWindow(SW_SHOW);
 }
+
+

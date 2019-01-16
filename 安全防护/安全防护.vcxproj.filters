@@ -81,6 +81,9 @@
     <ClInclude Include="TrashClean.h">
       <Filter>垃圾清理</Filter>
     </ClInclude>
+    <ClInclude Include="ServiceManager.h">
+      <Filter>任务管理器</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="安全防护.cpp">
@@ -130,6 +133,9 @@
     </ClCompile>
     <ClCompile Include="TrashClean.cpp">
       <Filter>垃圾清理</Filter>
+    </ClCompile>
+    <ClCompile Include="ServiceManager.cpp">
+      <Filter>任务管理器</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

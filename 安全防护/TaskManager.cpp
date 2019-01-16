@@ -8,6 +8,7 @@
 #include "Thread.h"
 #include "Module.h"
 #include "MemoryManager.h"
+#include "ServiceManager.h"
 #include<windows.h>
 #include<TlHelp32.h>
 #include<vector>
@@ -68,6 +69,7 @@ BEGIN_MESSAGE_MAP(CTaskManager, CDialogEx)
 	ON_COMMAND(ID_PROCESS_TERMINATEPROCESS, &CTaskManager::OnProcessTerminateprocess)
 	ON_BN_CLICKED(IDC_BUTTON_ShowWin, &CTaskManager::OnBnClickedButtonShowwin)
 	ON_BN_CLICKED(IDC_BUTTON_Memory_Control, &CTaskManager::OnBnClickedButtonMemoryControl)
+	ON_BN_CLICKED(IDC_BUTTON_Service, &CTaskManager::OnBnClickedButtonService)
 END_MESSAGE_MAP()
 
 
@@ -303,4 +305,13 @@ void CTaskManager::OnBnClickedButtonMemoryControl()
 	CMemoryManager* MemoryManager= new CMemoryManager();
 	MemoryManager->Create(IDD_DIALOG_Memory_Manager);
 	MemoryManager->ShowWindow(SW_SHOW);
+}
+
+
+void CTaskManager::OnBnClickedButtonService()
+{
+	// TODO:  在此添加控件通知处理程序代码
+	CServiceManager* ServiceManager = new CServiceManager();
+	ServiceManager->Create(IDD_DIALOG_ServiceManager);
+	ServiceManager->ShowWindow(SW_SHOW);
 }

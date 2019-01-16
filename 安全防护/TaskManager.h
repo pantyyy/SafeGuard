@@ -29,4 +29,5 @@ public:
 	afx_msg void OnProcessTerminateprocess();
 	afx_msg void OnBnClickedButtonShowwin();
 	afx_msg void OnBnClickedButtonMemoryControl();
+	afx_msg void OnBnClickedButtonService();
 };
