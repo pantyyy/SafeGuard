@@ -66,10 +66,18 @@ BOOL CKillVirus::OnInitDialog()
 	SetWindowText(DlgTitle.GetBuffer());
 
 	m_virus_list.SetExtendedStyle(LVS_EX_GRIDLINES | LVS_EX_FULLROWSELECT);
-	m_virus_list.InsertColumn(0, L"病毒名字", 0, 150);
+	m_virus_list.InsertColumn(0, L"感染文件名", 0, 150);
 	m_virus_list.InsertColumn(1, L"病毒路径", 0, 300);
 	m_virus_list.InsertColumn(2, L"MD5", 0, 250);
 
+	//连接服务器
+	if (!CTool::m_client.ConnectServer("127.0.0.1", 1234))
+	{
+		MessageBox(L"连接服务器失败！", L"Error!", MB_OK || MB_ICONWARNING);
+	}
+
+	//接收所有服务器发送过来的数据
+	WSAAsyncSelect(CTool::m_client.m_sClient, m_hWnd, WM_MYSOCKET, FD_READ | FD_CLOSE);
 
 	return TRUE;  // return TRUE unless you set the focus to a control
 	// 异常:  OCX 属性页应返回 FALSE
@@ -157,22 +165,9 @@ void CKillVirus::OnBnClickedButtonCloudKill()
 {
 	// TODO:  在此添加控件通知处理程序代码
 
-	//连接服务器
-	if (!CTool::m_client.ConnectServer("127.0.0.1", 1234))
-	{
-		MessageBox(L"连接服务器失败！", L"Error!", MB_OK || MB_ICONWARNING);
-		return;
-	}
-
-	//服务器连接成功
-
 	//向服务器发送获取病毒MD5值的信息
 	CStringA str("获取病毒MD5");
 	CTool::m_client.SendMsg(str.GetBuffer() , str.GetLength() , GetVirusMD5);
-
-	//接收所有服务器发送过来的数据
-	WSAAsyncSelect(CTool::m_client.m_sClient, m_hWnd, WM_MYSOCKET, FD_READ | FD_CLOSE);
-
 }
 
 
@@ -272,26 +267,27 @@ void CKillVirus::OnVirus()
 void CKillVirus::OnVirusUploadvirus()
 {
 	// TODO:  在此添加命令处理程序代码
-	HANDLE hFile;//定义一个句柄。   
-	hFile = CreateFile(L"Virus_Database.txt",
-		GENERIC_WRITE,
-		FILE_SHARE_WRITE,
-		NULL,
-		OPEN_ALWAYS,
-		FILE_ATTRIBUTE_NORMAL,
-		NULL);//使用CreatFile这个API函数打开文件   
-	DWORD Written;
-	WriteFile(hFile, "Welcome to VCFans!", strlen("Welcome to VCFans!"), &Written, NULL);//写入文件   
-	CloseHandle(hFile);//关闭句柄   
+	//向服务器发送获取病毒MD5值的信息
+
+	//获取选中的进程ID
+	POSITION ps;
+	int index;
+	ps = m_virus_list.GetFirstSelectedItemPosition();
+	//获取index下标 , index即是多少行
+	index = m_virus_list.GetNextSelectedItem(ps);
+	//获取选中行中指定列的数据 , 0表示多少列
+	CStringA virus_md5 = (CStringA)m_virus_list.GetItemText(index, 2);
+	//int ProcessID = _ttoi(PID);
+
+	CTool::m_client.SendMsg(virus_md5.GetBuffer(), virus_md5.GetLength(), UploadVirusMD5);
 }
 
 
 void CKillVirus::OnBnClickedButtonCleanVirus()
 {
 	// TODO:  在此添加控件通知处理程序代码
-
-
-
+	m_virus_list.DeleteAllItems();
+	MessageBox(L"病毒清理成功!");
 }
 
 
@@ -329,7 +325,7 @@ afx_msg LRESULT CKillVirus::OnMysocket(WPARAM wParam, LPARAM lParam)
 			RecvForVirusMD5(msg);
 			break;
 		case UploadVirusMD5:
-			//RecvForGroupMsg(msg);
+			RecvForUploadVirus(msg);
 			break;
 		}
 
@@ -343,5 +339,72 @@ afx_msg LRESULT CKillVirus::OnMysocket(WPARAM wParam, LPARAM lParam)
 
 void CKillVirus::RecvForVirusMD5(Msg_Pack msg)
 {
-	MessageBox(CString(msg.nMsgBuff));
+	CString value = CString(msg.nMsgBuff);
+
+
+	//1.获取指定路径所有的文件
+	m_virus_list.DeleteAllItems();
+	std::vector<FileInfo> fileList;
+	CTool::GetAllFile(m_path.GetBuffer(), fileList);
+
+	if (fileList.size() == 0)
+	{
+		MessageBox(L"没有找到符合要求的文件!");
+		return;
+	}
+
+
+	//2.解析云端的病毒库
+	std::string cloud_virus_str = CW2A(value.GetString());
+	vector<string> cloud_virus_list;
+	//字符串切割为对象
+	CTool::SplitString(cloud_virus_str, cloud_virus_list, "|");
+
+	int nCount = 0;
+	for (int i = 0; i < fileList.size(); i++)
+	{
+		//计算文件的md5值
+		char* file_path = new char[520];
+		WideCharToMultiByte(CP_ACP, 0, fileList[i].cFilePath, -1, file_path, 520, NULL, NULL);
+		char * file_md5 = md5FileValue(file_path);
+		std::string temp = file_md5;
+
+		for (int j = 0; j < cloud_virus_list.size(); j++){
+			if (temp == cloud_virus_list[j])
+			{
+				m_virus_list.InsertItem(nCount, L"");
+				//病毒名
+				CString name(fileList[i].cFileName);
+				m_virus_list.SetItemText(nCount, 0, name);
+
+				//病毒路劲
+				CString path(fileList[i].cFilePath);
+				m_virus_list.SetItemText(nCount, 1, path);
+
+				//MD5值
+				CString virus_md5;
+				virus_md5.Format(L"%S", file_md5);
+				m_virus_list.SetItemText(nCount, 2, virus_md5);
+
+				nCount++;
+			}
+		}
+	}
+
+
+
+}
+
+void CKillVirus::RecvForUploadVirus(Msg_Pack msg)
+{
+	CString value = CString(msg.nMsgBuff);
+
+	if (value == "上传成功")
+	{
+		MessageBox(L"上传成功!");
+	}
+	else
+	{
+		MessageBox(L"上传失败!");
+	}
 }

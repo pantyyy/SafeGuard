@@ -36,6 +36,7 @@ public:
 	afx_msg void OnBnClickedButtonCleanVirus();
 
 	void RecvForVirusMD5(Msg_Pack msg);
+	void RecvForUploadVirus(Msg_Pack msg);
 protected:
 	afx_msg LRESULT OnMysocket(WPARAM wParam, LPARAM lParam);
 };

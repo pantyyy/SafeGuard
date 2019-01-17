@@ -2,6 +2,10 @@
 #include<vector>
 #include <Strsafe.h>
 #include "ClientSocket.h"
+#include<string>
+#include<vector>
+using namespace std;
+
 
 struct FileInfo {
 	FILETIME ftCreationTime;
@@ -25,6 +29,8 @@ public:
 
 	static void GetAllFile(WCHAR* TargetPath, std::vector<FileInfo> &fileList);
 	static void GetAllTrashFile(WCHAR* TargetPath, std::vector<FileInfo> &fileList);
+	static void SplitString(const string& s, vector<string>& v, const string& c);
+
 
 	static char* pFileBuf;
 
