@@ -34,6 +34,8 @@ public:
 	afx_msg void OnBnClickedButtonTaskmanager();
 	afx_msg void OnBnClickedButtonCleantrash();
 	afx_msg void OnBnClickedButtonKillvirus();
+	CMenu boss_menu;
 
-
+	afx_msg void OnBossOn();
+	afx_msg void OnBossOff();
 };

@@ -73,6 +73,8 @@ BEGIN_MESSAGE_MAP(C安全防护Dlg, CDialogEx)
 	ON_BN_CLICKED(IDC_BUTTON_TaskManager, &C安全防护Dlg::OnBnClickedButtonTaskmanager)
 	ON_BN_CLICKED(IDC_BUTTON_CleanTrash, &C安全防护Dlg::OnBnClickedButtonCleantrash)
 	ON_BN_CLICKED(IDC_BUTTON_KillVirus, &C安全防护Dlg::OnBnClickedButtonKillvirus)
+	ON_COMMAND(ID_Boss_On, &C安全防护Dlg::OnBossOn)
+	ON_COMMAND(ID_Boss_Off, &C安全防护Dlg::OnBossOff)
 END_MESSAGE_MAP()
 
 
@@ -108,6 +110,9 @@ BOOL C安全防护Dlg::OnInitDialog()
 	SetIcon(m_hIcon, FALSE);		// 设置小图标
 
 	// TODO:  在此添加额外的初始化代码
+	boss_menu.LoadMenu(IDR_MENU_Boss_Key);
+	SetMenu(&boss_menu);
+
 
 	return TRUE;  // 除非将焦点设置到控件，否则返回 TRUE
 }
@@ -199,4 +204,18 @@ void C安全防护Dlg::OnBnClickedButtonKillvirus()
 	CKillVirus* KillVirus = new CKillVirus();
 	KillVirus->Create(IDD_DIALOG_Kill_Virus);
 	KillVirus->ShowWindow(SW_SHOW);
+}
+
+
+void C安全防护Dlg::OnBossOn()
+{
+	// TODO:  在此添加命令处理程序代码
+	MessageBox(L"开启老板键");
+}
+
+
+void C安全防护Dlg::OnBossOff()
+{
+	// TODO:  在此添加命令处理程序代码
+	MessageBox(L"关闭老板键");
 }
