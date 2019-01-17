@@ -35,7 +35,12 @@ public:
 	afx_msg void OnBnClickedButtonCleantrash();
 	afx_msg void OnBnClickedButtonKillvirus();
 	CMenu boss_menu;
-
+	BOOL m_IsWindowHide = TRUE;
 	afx_msg void OnBossOn();
 	afx_msg void OnBossOff();
+	virtual BOOL PreTranslateMessage(MSG* pMsg);
+	afx_msg void OnClockwin();
+	afx_msg void OnShutdown();
+	afx_msg void OnReboot();
+	afx_msg void OnHibernate();
 };

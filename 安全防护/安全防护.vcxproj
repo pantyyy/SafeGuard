@@ -204,6 +204,7 @@
     <ClInclude Include="Thread.h" />
     <ClInclude Include="Tool.h" />
     <ClInclude Include="TrashClean.h" />
+    <ClInclude Include="Unstall.h" />
     <ClInclude Include="WhiteListKill.h" />
     <ClInclude Include="安全防护.h" />
     <ClInclude Include="安全防护Dlg.h" />
@@ -232,6 +233,7 @@
     <ClCompile Include="Thread.cpp" />
     <ClCompile Include="Tool.cpp" />
     <ClCompile Include="TrashClean.cpp" />
+    <ClCompile Include="Unstall.cpp" />
     <ClCompile Include="WhiteListKill.cpp" />
     <ClCompile Include="安全防护.cpp" />
     <ClCompile Include="安全防护Dlg.cpp" />

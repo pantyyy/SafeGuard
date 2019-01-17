@@ -75,6 +75,10 @@ BEGIN_MESSAGE_MAP(C安全防护Dlg, CDialogEx)
 	ON_BN_CLICKED(IDC_BUTTON_KillVirus, &C安全防护Dlg::OnBnClickedButtonKillvirus)
 	ON_COMMAND(ID_Boss_On, &C安全防护Dlg::OnBossOn)
 	ON_COMMAND(ID_Boss_Off, &C安全防护Dlg::OnBossOff)
+	ON_COMMAND(ID_ClockWin, &C安全防护Dlg::OnClockwin)
+	ON_COMMAND(ID_Shutdown, &C安全防护Dlg::OnShutdown)
+	ON_COMMAND(ID_Reboot, &C安全防护Dlg::OnReboot)
+	ON_COMMAND(ID_Hibernate, &C安全防护Dlg::OnHibernate)
 END_MESSAGE_MAP()
 
 
@@ -210,12 +214,73 @@ void C安全防护Dlg::OnBnClickedButtonKillvirus()
 void C安全防护Dlg::OnBossOn()
 {
 	// TODO:  在此添加命令处理程序代码
-	MessageBox(L"开启老板键");
+	//MessageBox(L"开启老板键");
+	//1.注册全局热键
+	::RegisterHotKey(this->GetSafeHwnd(), /*获取当前窗口的句柄*/
+		0Xa001, /*自定义快捷键的标识*/
+		MOD_CONTROL | MOD_SHIFT, /*同时按下ctrl , shift*/
+		'K');
+
+	MessageBox(L"老板键开启成功！");
+
 }
 
 
 void C安全防护Dlg::OnBossOff()
 {
 	// TODO:  在此添加命令处理程序代码
-	MessageBox(L"关闭老板键");
+	::UnregisterHotKey(this->GetSafeHwnd(), 0Xa001);
+	MessageBox(L"老板键关闭成功！");
+}
+
+
+BOOL C安全防护Dlg::PreTranslateMessage(MSG* pMsg)
+{
+	// TODO:  在此添加专用代码和/或调用基类
+	//判断是否是全局热键 , 同时还是我们注册的键
+	if ((pMsg->message == WM_HOTKEY) && (pMsg->wParam == 0xa001))
+	{
+		//隐藏窗口
+		if (m_IsWindowHide == TRUE)
+		{
+			ShowWindow(SW_HIDE);
+			m_IsWindowHide = FALSE;
+		}
+		else{
+			ShowWindow(SW_SHOW);
+			m_IsWindowHide = TRUE;
+		}
+
+	}
+
+	return CDialogEx::PreTranslateMessage(pMsg);
+}
+
+
+void C安全防护Dlg::OnClockwin()
+{
+	// TODO:  在此添加命令处理程序代码
+	LockWorkStation();
+}
+
+
+void C安全防护Dlg::OnShutdown()
+{
+	// TODO:  在此添加命令处理程序代码
+	ExitWindowsEx(EWX_POWEROFF | EWX_FORCE, 1);
+}
+
+
+void C安全防护Dlg::OnReboot()
+{
+	// TODO:  在此添加命令处理程序代码
+	ExitWindowsEx(EWX_REBOOT | EWX_FORCE, 1);
+}
+
+
+void C安全防护Dlg::OnHibernate()
+{
+	// TODO:  在此添加命令处理程序代码
+	ExitWindowsEx(EWX_LOGOFF | EWX_FORCE, 1);
+	LockWorkStation();
 }

@@ -42,6 +42,7 @@ BEGIN_MESSAGE_MAP(CTrashClean, CDialogEx)
 	ON_BN_CLICKED(IDC_CHECK_User, &CTrashClean::OnBnClickedCheckUser)
 	ON_BN_CLICKED(IDC_CHECK_Recycle, &CTrashClean::OnBnClickedCheckRecycle)
 	ON_BN_CLICKED(IDC_CHECK_VS, &CTrashClean::OnBnClickedCheckVs)
+	ON_BN_CLICKED(IDC_BUTTON_Clean_Recycle_Bin, &CTrashClean::OnBnClickedButtonCleanRecycleBin)
 END_MESSAGE_MAP()
 
 
@@ -270,4 +271,11 @@ void CTrashClean::OnBnClickedCheckVs()
 	{
 		vs_trash = 0;
 	}
+}
+
+
+void CTrashClean::OnBnClickedButtonCleanRecycleBin()
+{
+	// TODO:  在此添加控件通知处理程序代码
+	SHEmptyRecycleBin(NULL , NULL , NULL);
 }

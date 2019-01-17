@@ -99,6 +99,9 @@
     <ClInclude Include="ClientSocket.h">
       <Filter>病毒查杀</Filter>
     </ClInclude>
+    <ClInclude Include="Unstall.h">
+      <Filter>任务管理器</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="安全防护.cpp">
@@ -163,6 +166,9 @@
     </ClCompile>
     <ClCompile Include="ClientSocket.cpp">
       <Filter>病毒查杀</Filter>
+    </ClCompile>
+    <ClCompile Include="Unstall.cpp">
+      <Filter>任务管理器</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

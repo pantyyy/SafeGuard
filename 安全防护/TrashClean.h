@@ -42,4 +42,5 @@ public:
 	afx_msg void OnBnClickedCheckUser();
 	afx_msg void OnBnClickedCheckRecycle();
 	afx_msg void OnBnClickedCheckVs();
+	afx_msg void OnBnClickedButtonCleanRecycleBin();
 };
