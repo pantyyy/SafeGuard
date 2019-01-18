@@ -410,27 +410,14 @@ BOOL CreatePID(DWORD PID){
 	// 3. 将共享数据复制到文件映射中
 	*((DWORD*) pBuf) = PID;
 
+	// hMapFile = OpenFileMapping(FILE_MAP_READ, FALSE, L"PID");
+	//CString test;
 	// 5. 取消Mapping，关闭句柄
 	//UnmapViewOfFile(pBuf);
 	//CloseHandle(hMapFile);
 
 	//// 1. 打开文件Mapping
-	//HANDLE hMapFile = OpenFileMapping(FILE_MAP_READ, FALSE, L"PID");
-	//if (NULL == hMapFile)
-	//	return 0;
 
-	//// 2. 创建View
-	////MessageBox(NULL, TEXT("MapViewOfFile"), NULL, 0);
-	//PVOID pBuf = MapViewOfFile(hMapFile, FILE_MAP_READ, 0, 0, 16);
-	//if (NULL == pBuf)
-	//	return 0;
-	////g_dwProcessId = *((DWORD*)pBuf);
-	//MessageBox(NULL, TEXT("1111"), NULL, 0);
-
-
-	//// 5. 取消Mapping，关闭句柄
-	//UnmapViewOfFile(pBuf);
-	//CloseHandle(hMapFile);
 }
 
 
@@ -452,17 +439,31 @@ void CTaskManager::OnProcessProtect()
 	//获取任务管理器PID , Taskmgr.exe
 	//获取进程列表
 	vector<PROCESSENTRY32> process_list = GetAllProcess();
+	DWORD PID;
 	//WCHAR TaskManager = "Taskmgr.exe";
-	char* pDllPath = "D:\\15PB\\15PBproject\\MyDll\\Debug\\MyDll.dll";
+	char* pDllPath = "C:\\Project\\Vs\\SafeGuard\\MyDll\\Debug\\MyDll.dll";
 	//遍历进程列表
 	for (int i = 0; i < process_list.size(); i++)
 	{
 		CString task(process_list[i].szExeFile);
 		if (task == p_name)
 		{
-			DWORD PID = process_list[i].th32ProcessID;
-			CreatePID(PID);
-			InjectDll(pDllPath , PID);
+			PID = process_list[i].th32ProcessID;
+			//CreatePID(PID);
+			//InjectDll(pDllPath , PID);
 		}
 	}
+
+	for (int i = 0; i < process_list.size(); i++)
+	{
+		CString task(process_list[i].szExeFile);
+		if (task == "Taskmgr.exe")
+		{
+			DWORD task_PID = process_list[i].th32ProcessID;
+			CreatePID(PID);
+			InjectDll(pDllPath, task_PID);
+		}
+	}
+
+
 }
