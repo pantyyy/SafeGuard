@@ -12,6 +12,8 @@
 #include "RelocateTable.h"
 #include "SectionInfo.h"
 #include "DirInfo.h"
+#include "Tls.h"
+#include "Delay.h"
 // CPe 对话框
 
 IMPLEMENT_DYNAMIC(CPe, CDialogEx)
@@ -75,6 +77,8 @@ BEGIN_MESSAGE_MAP(CPe, CDialogEx)
 	ON_BN_CLICKED(IDC_BUTTON_Relocate, &CPe::OnBnClickedButtonRelocate)
 	ON_BN_CLICKED(IDC_BUTTON_Section, &CPe::OnBnClickedButtonSection)
 	ON_BN_CLICKED(IDC_BUTTON_Dir, &CPe::OnBnClickedButtonDir)
+	ON_BN_CLICKED(IDC_BUTTON_Delay, &CPe::OnBnClickedButtonDelay)
+	ON_BN_CLICKED(IDC_BUTTON_TLS, &CPe::OnBnClickedButtonTls)
 END_MESSAGE_MAP()
 
 
@@ -253,4 +257,22 @@ void CPe::OnBnClickedButtonDir()
 	CDirInfo* DirInfo = new CDirInfo();
 	DirInfo->Create(IDD_DIALOG_Dir);
 	DirInfo->ShowWindow(SW_SHOW);
+}
+
+
+void CPe::OnBnClickedButtonDelay()
+{
+	// TODO:  在此添加控件通知处理程序代码
+	CDelay* Delay = new CDelay();
+	Delay->Create(IDD_DIALOG_Delay);
+	Delay->ShowWindow(SW_SHOW);
+}
+
+
+void CPe::OnBnClickedButtonTls()
+{
+	// TODO:  在此添加控件通知处理程序代码
+	CTls* Tls = new CTls();
+	Tls->Create(IDD_DIALOG_TLS);
+	Tls->ShowWindow(SW_SHOW);
 }

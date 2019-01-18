@@ -102,6 +102,15 @@
     <ClInclude Include="Unstall.h">
       <Filter>任务管理器</Filter>
     </ClInclude>
+    <ClInclude Include="ResourceDescriptor.h">
+      <Filter>PE解析器</Filter>
+    </ClInclude>
+    <ClInclude Include="Delay.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Tls.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="安全防护.cpp">
@@ -169,6 +178,12 @@
     </ClCompile>
     <ClCompile Include="Unstall.cpp">
       <Filter>任务管理器</Filter>
+    </ClCompile>
+    <ClCompile Include="Delay.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Tls.cpp">
+      <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

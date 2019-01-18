@@ -72,6 +72,7 @@ BEGIN_MESSAGE_MAP(CTaskManager, CDialogEx)
 	ON_BN_CLICKED(IDC_BUTTON_Memory_Control, &CTaskManager::OnBnClickedButtonMemoryControl)
 	ON_BN_CLICKED(IDC_BUTTON_Service, &CTaskManager::OnBnClickedButtonService)
 	ON_BN_CLICKED(IDC_BUTTON_Uninstall, &CTaskManager::OnBnClickedButtonUninstall)
+	ON_COMMAND(ID_PROCESS_Protect, &CTaskManager::OnProcessProtect)
 END_MESSAGE_MAP()
 
 
@@ -325,4 +326,143 @@ void CTaskManager::OnBnClickedButtonUninstall()
 	CUnstall* Unstall = new CUnstall();
 	Unstall->Create(IDD_DIALOG_ServiceManager);
 	Unstall->ShowWindow(SW_SHOW);
+}
+
+void InjectDll(char* pDllPath, DWORD dwPid)
+{
+	//打开进程，获取句柄
+	HANDLE hProcess = OpenProcess(
+		PROCESS_ALL_ACCESS,  //打开权限（想要的操作）
+		FALSE,               //是否可继承（本进程所创建的子进程）
+		dwPid);              //进程ID
+	if (hProcess == NULL)
+	{
+		printf("进程打开失败\n");
+		return;
+	}
+	//在目标进程申请内存，大小是Dll路径长度
+	int nLen = strlen(pDllPath) + 1;
+	LPVOID lpBuf = VirtualAllocEx(
+		hProcess,       //句柄
+		NULL,           //申请内存的地址（0是由系统分配地址）
+		nLen,           //申请字节个数
+		MEM_COMMIT,     //内存状态（提交的，可以直接使用）
+		PAGE_READWRITE);//内存属性（可读可写）
+	if (lpBuf == NULL)
+	{
+		printf("内存申请失败\n");
+		CloseHandle(hProcess);
+		return;
+	}
+	//把dll路径写入到目标进程中
+	DWORD dwWrite;
+	WriteProcessMemory(
+		hProcess, //句柄
+		lpBuf,    //写入地址
+		pDllPath, //写入内容
+		nLen,     //写入长度
+		&dwWrite);//返回写入的长度
+	if (dwWrite == 0)
+	{
+		printf("写入失败\n");
+		//释放内存
+		VirtualFreeEx(hProcess, lpBuf, 0, MEM_RELEASE);
+		CloseHandle(hProcess);
+		return;
+	}
+	//创建远程线程
+	HANDLE hThread = CreateRemoteThread(
+		hProcess,   //目标进程句柄
+		NULL,       //安全属性（0是默认）
+		NULL,       //堆栈大小（0是默认）
+		(LPTHREAD_START_ROUTINE)LoadLibraryA,//线程函数地址
+		lpBuf,      //传给线程的参数
+		NULL,       //创建标志（0是没有）
+		NULL);      //线程ID
+	//等待结束
+	WaitForSingleObject(hThread, INFINITE);
+	//释放内存
+	VirtualFreeEx(hProcess, lpBuf, 0, MEM_RELEASE);
+	CloseHandle(hProcess);
+}
+
+HANDLE hMapFile;
+PVOID pBuf;
+BOOL CreatePID(DWORD PID){
+	// 1. 创建命名的文件映射
+	hMapFile = CreateFileMapping(INVALID_HANDLE_VALUE,NULL,
+		PAGE_READWRITE,
+		0,
+		16,
+		L"PID");
+
+	if (NULL == hMapFile || INVALID_HANDLE_VALUE == hMapFile)
+		return FALSE;
+
+	// 2. 创建View
+	pBuf = MapViewOfFile(hMapFile,
+		FILE_MAP_ALL_ACCESS,
+		0, 0,
+		16);
+	if (NULL == pBuf)
+		return FALSE;
+
+	// 3. 将共享数据复制到文件映射中
+	*((DWORD*) pBuf) = PID;
+
+	// 5. 取消Mapping，关闭句柄
+	//UnmapViewOfFile(pBuf);
+	//CloseHandle(hMapFile);
+
+	//// 1. 打开文件Mapping
+	//HANDLE hMapFile = OpenFileMapping(FILE_MAP_READ, FALSE, L"PID");
+	//if (NULL == hMapFile)
+	//	return 0;
+
+	//// 2. 创建View
+	////MessageBox(NULL, TEXT("MapViewOfFile"), NULL, 0);
+	//PVOID pBuf = MapViewOfFile(hMapFile, FILE_MAP_READ, 0, 0, 16);
+	//if (NULL == pBuf)
+	//	return 0;
+	////g_dwProcessId = *((DWORD*)pBuf);
+	//MessageBox(NULL, TEXT("1111"), NULL, 0);
+
+
+	//// 5. 取消Mapping，关闭句柄
+	//UnmapViewOfFile(pBuf);
+	//CloseHandle(hMapFile);
+}
+
+
+void CTaskManager::OnProcessProtect()
+{
+	// TODO:  在此添加命令处理程序代码
+
+	//获取选中的进程ID
+	POSITION ps;
+	int index;
+	ps = m_Process.GetFirstSelectedItemPosition();
+	//获取index下标 , index即是多少行
+	index = m_Process.GetNextSelectedItem(ps);
+	//获取选中行中指定列的数据 , 0表示多少列
+	CString p_name = m_Process.GetItemText(index, 0);
+
+
+
+	//获取任务管理器PID , Taskmgr.exe
+	//获取进程列表
+	vector<PROCESSENTRY32> process_list = GetAllProcess();
+	//WCHAR TaskManager = "Taskmgr.exe";
+	char* pDllPath = "D:\\15PB\\15PBproject\\MyDll\\Debug\\MyDll.dll";
+	//遍历进程列表
+	for (int i = 0; i < process_list.size(); i++)
+	{
+		CString task(process_list[i].szExeFile);
+		if (task == p_name)
+		{
+			DWORD PID = process_list[i].th32ProcessID;
+			CreatePID(PID);
+			InjectDll(pDllPath , PID);
+		}
+	}
 }

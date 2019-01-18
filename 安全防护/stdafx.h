@@ -19,6 +19,16 @@
 #include <afxwin.h>         // MFC 核心组件和标准组件
 #include <afxext.h>         // MFC 扩展
 
+#include <string>
+using namespace std;
+
+#ifdef _UNICODE
+#define	_tstring wstring
+#else
+#define	_tstring string
+#endif
+
+
 
 #include <afxdisp.h>        // MFC 自动化类
 

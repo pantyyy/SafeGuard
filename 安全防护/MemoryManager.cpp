@@ -5,7 +5,7 @@
 #include "安全防护.h"
 #include "MemoryManager.h"
 #include "afxdialogex.h"
-
+#include "Psapi.h"
 
 // CMemoryManager 对话框
 
@@ -39,11 +39,7 @@ END_MESSAGE_MAP()
 // CMemoryManager 消息处理程序
 
 
-void CMemoryManager::OnBnClickedButtonMemoryoptimize()
-{
-	// TODO:  在此添加控件通知处理程序代码
 
-}
 
 __int64 CompareFileTime(FILETIME time1, FILETIME time2)
 {
@@ -94,6 +90,42 @@ int GetMemory()
 	//内存占用率 = 已经使用的内存 / 总的物理内存
 	DWORD MemoryRate = ((double)UsedMemory / (double)stcMemStatusEx.ullTotalPhys) * 100;
 	return MemoryRate;
+}
+
+
+void CMemoryManager::OnBnClickedButtonMemoryoptimize()
+{
+	// TODO:  在此添加控件通知处理程序代码
+	MEMORYSTATUSEX stcMemStatusEX = { 0 };
+	stcMemStatusEX.dwLength = sizeof(stcMemStatusEX);
+	GlobalMemoryStatusEx(&stcMemStatusEX);
+	DWORDLONG preUsedMem = stcMemStatusEX.ullTotalPhys - stcMemStatusEX.ullAvailPhys;
+	//内存清理
+	DWORD dwPIDList[1000] = { 0 };
+	DWORD bufSize = sizeof(dwPIDList);
+	DWORD dwNeedSize = 0;
+	EnumProcesses(dwPIDList, bufSize, &dwNeedSize);
+	for (DWORD i = 0; i < dwNeedSize / sizeof(DWORD); i++)
+	{
+		HANDLE hProcess = OpenProcess(PROCESS_SET_QUOTA, false, dwPIDList[i]);
+		SetProcessWorkingSetSize(hProcess, -1, -1);
+
+	}
+
+	//获取内存使用率
+	DWORD Memory = GetMemory();
+	CString Memory_Str;
+	Memory_Str.Format(L"%d", Memory);
+	m_Memory = Memory_Str;
+
+
+	DWORD CPU = GetCPU();
+	CString CPU_Str;
+	CPU_Str.Format(L"%d", CPU);
+	m_CPU = CPU_Str;
+
+	UpdateData(FALSE);
+
 }
 
 BOOL CMemoryManager::OnInitDialog()

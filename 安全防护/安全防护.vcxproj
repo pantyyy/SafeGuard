@@ -185,6 +185,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ClientSocket.h" />
+    <ClInclude Include="Delay.h" />
     <ClInclude Include="DirInfo.h" />
     <ClInclude Include="ExportTable.h" />
     <ClInclude Include="ImportTable.h" />
@@ -195,6 +196,7 @@
     <ClInclude Include="Pe.h" />
     <ClInclude Include="RelocateTable.h" />
     <ClInclude Include="Resource.h" />
+    <ClInclude Include="ResourceDescriptor.h" />
     <ClInclude Include="ResourceTable.h" />
     <ClInclude Include="SectionInfo.h" />
     <ClInclude Include="ServiceManager.h" />
@@ -202,6 +204,7 @@
     <ClInclude Include="targetver.h" />
     <ClInclude Include="TaskManager.h" />
     <ClInclude Include="Thread.h" />
+    <ClInclude Include="Tls.h" />
     <ClInclude Include="Tool.h" />
     <ClInclude Include="TrashClean.h" />
     <ClInclude Include="Unstall.h" />
@@ -211,6 +214,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ClientSocket.cpp" />
+    <ClCompile Include="Delay.cpp" />
     <ClCompile Include="DirInfo.cpp" />
     <ClCompile Include="ExportTable.cpp" />
     <ClCompile Include="ImportTable.cpp" />
@@ -231,6 +235,7 @@
     </ClCompile>
     <ClCompile Include="TaskManager.cpp" />
     <ClCompile Include="Thread.cpp" />
+    <ClCompile Include="Tls.cpp" />
     <ClCompile Include="Tool.cpp" />
     <ClCompile Include="TrashClean.cpp" />
     <ClCompile Include="Unstall.cpp" />

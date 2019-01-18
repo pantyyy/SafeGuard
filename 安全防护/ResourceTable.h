@@ -1,6 +1,7 @@
 #pragma once
 #include "afxcmn.h"
-
+#include "ResourceDescriptor.h"
+#include <unordered_map>
 
 // CResourceTable ¶Ô»°¿ò
 
@@ -21,7 +22,19 @@ protected:
 	DECLARE_MESSAGE_MAP()
 public:
 	CTreeCtrl ResourceTree;
-	CListCtrl ResourceList;
+
+	unordered_map<HTREEITEM, CResourceDescriptor *> m_TreeDataMap;
 	virtual BOOL OnInitDialog();
-	void AddNode(PIMAGE_RESOURCE_DIRECTORY pResHeader , HTREEITEM hParent);
+	void DecodeResourceEntry();
+	void GetNodeName(CResourceDescriptor *pDescriptor, CString& str);
+	void GetInternalDisplayName(WORD wType, CString & str);
+	void AddNode(CResourceDescriptor * pDescriptor, HTREEITEM hParent);
+	void _DecodeResourceDirEntry(CResourceDescriptor * pDirNode, PIMAGE_RESOURCE_DIRECTORY pDirInfo);
+	CResourceDescriptor *m_pResourceTable;
+	CString num_of_str;
+	CString num_of_ID;
+	CString node_type;
+	CString rva;
+	CString foa;
+	afx_msg void OnTvnSelchangedTree1(NMHDR *pNMHDR, LRESULT *pResult);
 };

@@ -31,4 +31,5 @@ public:
 	afx_msg void OnBnClickedButtonMemoryControl();
 	afx_msg void OnBnClickedButtonService();
 	afx_msg void OnBnClickedButtonUninstall();
+	afx_msg void OnProcessProtect();
 };

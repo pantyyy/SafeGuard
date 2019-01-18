@@ -45,4 +45,6 @@ public:
 	afx_msg void OnBnClickedButtonRelocate();
 	afx_msg void OnBnClickedButtonSection();
 	afx_msg void OnBnClickedButtonDir();
+	afx_msg void OnBnClickedButtonDelay();
+	afx_msg void OnBnClickedButtonTls();
 };
